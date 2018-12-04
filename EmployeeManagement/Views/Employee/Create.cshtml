@@ -63,6 +63,16 @@
         </form>
     </div>
     <div class="col-md-6">
+       
+        <form asp-controller="Employee" asp-action="Create">
+            <p>
+                <select asp-for="MovieGenre" asp-items="Model.Genres">
+                    <option value="">All</option>
+                </select>
+                Title: <input type="text" name="SearchString">
+                <input type="submit" value="Filter" />
+            </p>
+        </form>
         <table class="table table-striped table-hover table-bordered">
             <thead>
             <tr>
