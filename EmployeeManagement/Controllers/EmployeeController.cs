@@ -69,112 +69,84 @@ namespace EmployeeManagement.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Search(string name, string regNo)
+        public IActionResult Edit(int Id)
         {
-            // Use LINQ to get list of genres.
-            IQueryable<string> searchQuery = from m in _employeeRepository.Search(employeeSearchCriteria: Name)
-                orderby m.Name
-                select m.Name;
+            var employee = _employeeRepository.GetById(Id);
 
+
+            var model = new EmployeeCreateViewModel()
+            {
+                Id = employee.Id,
+                Name = employee.Name,
+                Address = employee.Address,
+                DepartmentId = employee.DepartmentId,
+                Email = employee.Email,
+                MobileNumber = employee.MobileNumber,
+                Salary = employee.Salary,
+                 RegNo = employee.RegNo
+            };
+
+            model.Departments = _departmentRepository.GetAll()
+                .Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }).ToList();
 
             return View(model);
         }
 
-        public async Task<IActionResult> Update(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var employee = await _employeeRepository.Update(id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-           
-
-            return View();
-        }
         [HttpPost]
-        public IActionResult Update(int id, [Bind("name,regNo,mobileNumber,salary,email,DepartmentId")] Employee employee)
+        public IActionResult Edit(EmployeeCreateViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                if (id != employee.Id)
-                {
-                    return NotFound();
-                }
-                try
-                {
-                    _employeeRepository.Update(employee);
-                    _employeeRepository.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EmployeeExist(employee.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("Search");
-            }
-            
-            return View();
-        }
 
-        private bool EmployeeExist(int id)
-        {
-            return _employeeRepository.Update.Any(e => e.Id == id);
-        }
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
+            var employee = new Employee()
             {
-                return NotFound();
+                Id = model.Id,
+                Name = model.Name,
+                Address = model.Address,
+                DepartmentId = model.DepartmentId,
+                Email = model.Email,
+                MobileNumber = model.MobileNumber,
+                Salary = model.Salary,
+                RegNo = model.RegNo,
+            };
+
+            bool isUpdated = _employeeRepository.Update(employee);
+
+            model.Departments = _departmentRepository.GetAll()
+                .Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }).ToList();
+            if (isUpdated)
+            {
+                ViewBag.Message = "Updated Successful";
+                return View(model);
             }
 
-            var employee = await _employeeRepository.Delete
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-
-            return View(employee);
+            return View(model);
         }
 
-        // POST: Movies/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+
+        public IActionResult Details(int Id)
         {
-            var employee = await _employeeRepository.Delete.FindAsync(id);
-            _employeeRepository.Employee.Remove(employee);
-           
-            await _employeeRepository.SaveChangesAsync();
-            return RedirectToAction(nameof(Search));
-        }
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var employee = _employeeRepository.GetById(Id);
 
-            var employee = await _employeeRepository.Delete
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
 
-            return View(course);
+            var model = new EmployeeCreateViewModel()
+            {
+                Id = employee.Id,
+                Name = employee.Name,
+                Address = employee.Address,
+                DepartmentId = employee.DepartmentId,
+                Email = employee.Email,
+                MobileNumber = employee.MobileNumber,
+                Salary = employee.Salary,
+                RegNo = employee.RegNo
+            };
+
+            model.Departments = _departmentRepository.GetAll()
+                .Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }).ToList();
+
+            return View(model);
         }
+
+
+
 
     }
 }

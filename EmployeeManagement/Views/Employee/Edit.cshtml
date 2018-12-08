@@ -1,10 +1,11 @@
 ﻿@model EmployeeCreateViewModel
 
+
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-<h2>Create</h2>
+<h2>Edit</h2>
 
 <h4>Employee</h4>
 <hr />
@@ -16,16 +17,9 @@
                 @ViewBag.Message
             </div>
         }
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="DepartmentId" class="control-label"></label>
-                <select asp-for="DepartmentId" asp-items="Model.Departments" class="form-control">
-                    <option value="">--SELECT--</option>
-                </select>
-               
-                <span asp-validation-for="DepartmentId" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -56,46 +50,17 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-          
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <label asp-for="DepartmentId" class="control-label"></label>
+                <select asp-for="DepartmentId" class="form-control" asp-items="@Model.Departments"></select>
+                <span asp-validation-for="DepartmentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </form>
     </div>
-    <div class="col-md-6">
-       
-      
-        <table class="table table-striped table-hover table-bordered">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Reg No</th>
-                <th>Salary</th>
-                <th>Department Name</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var employee in Model.Employees)
-            {
-                <tr>
-                    <td>@employee.Name</td>
-                    <td>@employee.RegNo</td>
-                    <td>@employee.Salary</td>
-                    <td>@(employee.Department?.Name ?? "N/A")</td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@employee.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@employee.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@employee.Id">Delete</a>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    </div>
 </div>
-
-
 
 <div>
     <a asp-action="Create">Back to List</a>

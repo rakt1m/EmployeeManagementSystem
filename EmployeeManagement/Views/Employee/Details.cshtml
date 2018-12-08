@@ -1,4 +1,4 @@
-﻿@model EmployeeManagement.Models.EntityModels.Employee
+﻿@model EmployeeCreateViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -47,14 +47,14 @@
             @Html.DisplayFor(model => model.Email)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Department)
+            @Html.DisplayNameFor(model => model.Departments)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Department.Id)
+            @Html.DisplayFor(model => model.Departments)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Update" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Create">Back to List</a>
 </div>

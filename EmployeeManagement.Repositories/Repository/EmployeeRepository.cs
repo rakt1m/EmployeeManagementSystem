@@ -12,6 +12,9 @@ namespace EmployeeManagement.Repositories.Repository
     {
 
         ApplicationDbContext db = new ApplicationDbContext();
+
+        public object Delete { get; set; }
+
         public bool Add(Employee employee)
         {
             db.Employees.Add(employee);
@@ -50,15 +53,14 @@ namespace EmployeeManagement.Repositories.Repository
 
             return result.ToList();
         }
-
         public IEnumerable<Employee> GetAll()
         {
             return db.Employees.Include(c => c.Department).ToList();
         }
-
-        public bool Update(object employee)
+       
+        public List<Employee> GetByDepartmentId(int departmentId)
         {
-            throw new NotImplementedException();
+            return db.Employees.Where(c => c.DepartmentId == departmentId).ToList();
         }
     }
 }
