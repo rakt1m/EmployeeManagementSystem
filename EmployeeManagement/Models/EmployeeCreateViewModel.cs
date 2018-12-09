@@ -4,15 +4,20 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using EmployeeManagement.Models.EntityModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EmployeeManagement.Models
 {
+    public partial class Reg
+    {
+    }
     public class EmployeeCreateViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
         [Required]
+       
         public string RegNo { get; set; }
         [Required]
         public double Salary { get; set; }

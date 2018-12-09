@@ -9,7 +9,7 @@ namespace EmployeeManagement.Models
     public class DepartmentCreateViewModel
     {
 
-        [StringLength(4)]
+     
         public string Name { get; set; }
     }
 }
