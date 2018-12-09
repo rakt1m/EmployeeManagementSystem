@@ -23,7 +23,7 @@
                 <select asp-for="DepartmentId" asp-items="Model.Departments" class="form-control">
                     <option value="">--SELECT--</option>
                 </select>
-               
+
                 <span asp-validation-for="DepartmentId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -56,40 +56,40 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-          
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </form>
     </div>
     <div class="col-md-6">
-       
-      
-        <table class="table table-striped table-hover table-bordered">
+
+
+        <table id="tbemployee" class="table table-striped table-hover table-bordered">
             <thead>
-            <tr>
-                <th>Name</th>
-                <th>Reg No</th>
-                <th>Salary</th>
-                <th>Department Name</th>
-                <th>Actions</th>
-            </tr>
+                <tr>
+                    <th>Name</th>
+                    <th>Reg No</th>
+                    <th>Salary</th>
+                    <th>Department Name</th>
+                    <th>Actions</th>
+                </tr>
             </thead>
             <tbody>
-            @foreach (var employee in Model.Employees)
-            {
-                <tr>
-                    <td>@employee.Name</td>
-                    <td>@employee.RegNo</td>
-                    <td>@employee.Salary</td>
-                    <td>@(employee.Department?.Name ?? "N/A")</td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@employee.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@employee.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@employee.Id">Delete</a>
-                    </td>
-                </tr>
-            }
+                @foreach (var employee in Model.Employees)
+                {
+                    <tr>
+                        <td>@employee.Name</td>
+                        <td>@employee.RegNo</td>
+                        <td>@employee.Salary</td>
+                        <td>@(employee.Department?.Name ?? "N/A")</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@employee.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@employee.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@employee.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
@@ -103,4 +103,18 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+<script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap.js"></script>
+    <script>
+
+        $('#tbemployee').dataTable();
+    </script>
+}
+
+
+@section Styles{ 
+    <link href="~/lib/datatables/css/jquery.dataTables.css" rel="stylesheet" />
+
+    <link href="~/lib/datatables/css/jquery.dataTables_themeroller.css" rel="stylesheet" />
 }
