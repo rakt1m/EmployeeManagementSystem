@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using EmployeeManagement.Models;
 using EmployeeManagement.Models.EntityModels;
 using EmployeeManagement.Repositories.Repository;
@@ -12,10 +13,12 @@ namespace EmployeeManagement.Controllers
     public class DepartmentController : Controller
     {
         private DepartmentRepository _departmentRepository;
+        private IMapper _mapper;
 
-        public DepartmentController(DepartmentRepository departmentRepository)
+        public DepartmentController(DepartmentRepository departmentRepository, IMapper mapper)
         {
             _departmentRepository = departmentRepository;
+            _mapper = mapper;
         }
         public IActionResult Index()
         {
@@ -33,10 +36,7 @@ namespace EmployeeManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                var department = new Department()
-                {
-                    Name = model.Name
-                };
+                var department = _mapper.Map<Department>(model);
                 bool isSaved = _departmentRepository.Add(department);
 
                 if (isSaved)

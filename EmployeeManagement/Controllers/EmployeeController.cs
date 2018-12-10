@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using EmployeeManagement.DatabaseContext.DatabaseContext;
 using EmployeeManagement.Models;
 using EmployeeManagement.Models.EntityModels;
@@ -17,10 +18,14 @@ namespace EmployeeManagement.Controllers
         private EmployeeRepository _employeeRepository;
         private DepartmentRepository _departmentRepository;
 
-        public EmployeeController(EmployeeRepository employeeRepository, DepartmentRepository departmentRepository)
+        private IMapper _mapper;
+
+
+        public EmployeeController(EmployeeRepository employeeRepository, DepartmentRepository departmentRepository,IMapper mapper)
         {
             this._employeeRepository = employeeRepository;
             this._departmentRepository = departmentRepository;
+            this._mapper = mapper;
         }
         public IActionResult Create()
         {
@@ -42,16 +47,7 @@ namespace EmployeeManagement.Controllers
 
             if (ModelState.IsValid)
             {
-                var employee = new Employee()
-                {
-                    Name = model.Name,
-                    Address = model.Address,
-                    DepartmentId = model.DepartmentId,
-                    Email = model.Email,
-                    MobileNumber = model.MobileNumber,
-                    Salary = model.Salary,
-                    RegNo = model.RegNo
-                };
+                var employee = _mapper.Map<Employee>(model);
                 bool isSaved = _employeeRepository.Add(employee);
                 if (isSaved)
                 {
@@ -73,19 +69,9 @@ namespace EmployeeManagement.Controllers
         public IActionResult Edit(int Id)
         {
             var employee = _employeeRepository.GetById(Id);
+            var model = _mapper.Map<EmployeeCreateViewModel>(employee);
 
-
-            var model = new EmployeeCreateViewModel()
-            {
-                Id = employee.Id,
-                Name = employee.Name,
-                Address = employee.Address,
-                DepartmentId = employee.DepartmentId,
-                Email = employee.Email,
-                MobileNumber = employee.MobileNumber,
-                Salary = employee.Salary,
-                 RegNo = employee.RegNo
-            };
+           
 
             model.Departments = _departmentRepository.GetAll()
                 .Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }).ToList();
@@ -97,17 +83,7 @@ namespace EmployeeManagement.Controllers
         public IActionResult Edit(EmployeeCreateViewModel model)
         {
 
-            var employee = new Employee()
-            {
-                Id = model.Id,
-                Name = model.Name,
-                Address = model.Address,
-                DepartmentId = model.DepartmentId,
-                Email = model.Email,
-                MobileNumber = model.MobileNumber,
-                Salary = model.Salary,
-                RegNo = model.RegNo,
-            };
+            var employee = _mapper.Map<Employee>(model);
 
             bool isUpdated = _employeeRepository.Update(employee);
 
@@ -128,17 +104,7 @@ namespace EmployeeManagement.Controllers
             var employee = _employeeRepository.GetById(Id);
 
 
-            var model = new EmployeeCreateViewModel()
-            {
-                Id = employee.Id,
-                Name = employee.Name,
-                Address = employee.Address,
-                DepartmentId = employee.DepartmentId,
-                Email = employee.Email,
-                MobileNumber = employee.MobileNumber,
-                Salary = employee.Salary,
-                RegNo = employee.RegNo
-            };
+            var model = _mapper.Map<EmployeeCreateViewModel>(employee);
 
             model.Departments = _departmentRepository.GetAll()
                 .Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }).ToList();

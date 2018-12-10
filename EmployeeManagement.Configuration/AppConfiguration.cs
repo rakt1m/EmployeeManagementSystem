@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using AutoMapper;
 using EmployeeManagement.DatabaseContext.DatabaseContext;
 using EmployeeManagement.Repositories.Repository;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +32,7 @@ namespace EmployeeManagement.Configuration
        
                 services.AddTransient<EmployeeRepository>();
                 services.AddTransient<DepartmentRepository>();
-
+                services.AddAutoMapper();
                 services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
 
