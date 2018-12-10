@@ -66,37 +66,37 @@ namespace EmployeeManagement.Controllers
             return View(model);
         }
 
-        public IActionResult Edit(int Id)
-        {
-            var employee = _employeeRepository.GetById(Id);
-            var model = _mapper.Map<EmployeeCreateViewModel>(employee);
+        //public IActionResult Edit(int Id)
+        //{
+        //    var employee = _employeeRepository.GetById(Id);
+        //    var model = _mapper.Map<EmployeeCreateViewModel>(employee);
 
            
 
-            model.Departments = _departmentRepository.GetAll()
-                .Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }).ToList();
+        //    model.Departments = _departmentRepository.GetAll()
+        //        .Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }).ToList();
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
-        [HttpPost]
-        public IActionResult Edit(EmployeeCreateViewModel model)
-        {
+        //[HttpPost]
+        //public IActionResult Edit(EmployeeCreateViewModel model)
+        //{
 
-            var employee = _mapper.Map<Employee>(model);
+        //    var employee = _mapper.Map<Employee>(model);
 
-            bool isUpdated = _employeeRepository.Update(employee);
+        //    bool isUpdated = _employeeRepository.Update(employee);
 
-            model.Departments = _departmentRepository.GetAll()
-                .Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }).ToList();
-            if (isUpdated)
-            {
-                ViewBag.Message = "Updated Successful";
-                return View(model);
-            }
+        //    model.Departments = _departmentRepository.GetAll()
+        //        .Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }).ToList();
+        //    if (isUpdated)
+        //    {
+        //        ViewBag.Message = "Updated Successful";
+        //        return View(model);
+        //    }
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
 
         public IActionResult Details(int Id)
@@ -112,8 +112,91 @@ namespace EmployeeManagement.Controllers
             return View(model);
         }
 
+        public IActionResult DepartmentEmployee()
+        {
+            var model = new DepartmentEmployeeViewModel();
+            model.Departments = _departmentRepository
+                .GetAll()
+                .Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                }).ToList();
 
-       
+            return View(model);
+        }
+
+
+        //[Produces("application/json")]
+        public IActionResult GetEmployeeBy(int departmentId)
+        {
+            var employees = _employeeRepository.GetByDepartmentId(departmentId);
+
+            return Json(employees);
+        }
+
+        [Produces("application/json")]
+        public IActionResult GetAllEmployee()
+        {
+            var employees = _employeeRepository.GetAll();
+
+            return Json(employees);
+        }
+
+        public IActionResult GetEmployee(int employeeId)
+        {
+            var employee = _employeeRepository.GetById(employeeId);
+            if (employee != null)
+            {
+                return PartialView("_EmployeeView", employee);
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+        public IActionResult Edit(int employeeId)
+        {
+            var employee = _employeeRepository.GetById(employeeId);
+
+            var model = _mapper.Map<EmployeeCreateViewModel>(employee);
+
+            model.Departments = _departmentRepository.GetAll()
+                .Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }).ToList();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EmployeeCreateViewModel model)
+        {
+            var employee = _mapper.Map<Employee>(model);
+
+            bool isUpdated = _employeeRepository.Update(employee);
+
+            model.Departments = _departmentRepository.GetAll()
+                .Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }).ToList();
+            if (isUpdated)
+            {
+                ViewBag.Message = "Updated Successful";
+                return View(model);
+            }
+
+            return View(model);
+        }
+
+        public IActionResult GetEmployeeEditPartial(int employeeId)
+        {
+            var employee = _employeeRepository.GetById(employeeId);
+            var model = _mapper.Map<EmployeeCreateViewModel>(employee);
+            model.Departments = _departmentRepository.GetAll()
+                .Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }).ToList();
+
+            return PartialView("Employee/_EmployeeEdit", model);
+        }
+
+
 
     }
 }

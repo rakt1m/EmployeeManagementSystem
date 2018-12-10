@@ -1,0 +1,103 @@
+﻿@model DepartmentEmployeeViewModel
+
+@{
+    ViewData["Title"] = "DepartmentEmployee";
+}
+
+<h2>DepartmentEmployee</h2>
+
+<div class="form-horizontal">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">Department</label>
+            <select name="DepartmentId" id="DepartmentId" asp-items="Model.Departments" class="form-control">
+                <option value="">--SELECT--</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Employees</label>
+            <select name="EmployeeId" id="EmployeeId" class="form-control">
+                <option value="">--SELECT--</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div id="myModal" class="modal fade " tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Update Employee Information </h4>
+                </div>
+                <div id="loadBox" class="modal-body">
+                    <p>One fine body&hellip;</p>
+                </div>
+                
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+</div>
+
+@section Scripts{
+    <script src="~/lib/node_modules/node_modules/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        $("#DepartmentId").change(function() {
+            loadDepartmentWiseEmployees();
+        });
+        var employeeId;
+        $('#EmployeeId').change(function() {
+            employeeId = $('#EmployeeId').val();
+            var jsonData = { employeeId: employeeId };
+            $.ajax({
+                type: "POST",
+                url: "/Employee/GetEmployeeEditPartial",
+                data: jsonData,
+                success: function(response) {
+                    $('#loadBox').html(response);
+                    $('#myModal').modal('show');
+                }
+            });
+        });
+        function onSuccess(response) {
+           var jsonData = { employeeId: employeeId };
+            $.ajax({
+                type: "POST",
+                url: "/Employee/GetEmployee",
+                data: jsonData,
+                success: function(response) {
+                    $('#loadBox').html(response);
+                    loadDepartmentWiseEmployees();
+                }
+            });
+        }
+        function onFailer(response) {
+            alert("Error Occurred");
+        }
+        function loadDepartmentWiseEmployees() {
+            var departmentId = $("#DepartmentId").val();
+            var json = { departmentId: departmentId };
+            $.ajax({
+                type: "POST",
+                url: "/Employee/GetEmployeeBy",
+                data: json,
+                success: function(response) {
+                    var employees = response;
+                    $('#EmployeeId').empty();
+                    var emptyOption = "<option value=''>--SELECT--</option>"
+                    $('#EmployeeId').append(emptyOption);
+                    $.each(employees,
+                        function(key, employee) {
+                            var option = "<option value='" + employee.id + "'>" + employee.name + "</option>";
+                            $('#EmployeeId').append(option);
+                        });
+                },
+                error: function(response) {
+                    alert(response.message);
+                }
+            });
+        }
+    </script>
+}
