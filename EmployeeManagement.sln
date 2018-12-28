@@ -15,6 +15,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.DatabaseContext", "EmployeeManagement.DatabaseContext\EmployeeManagement.DatabaseContext.csproj", "{F6994909-4380-44C5-8F7F-B47F7BFE1F35}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Configuration", "EmployeeManagement.Configuration\EmployeeManagement.Configuration.csproj", "{98026864-8658-4EAA-8509-C92A91463401}"
+	ProjectSection(ProjectDependencies) = postProject
+		{09430EDF-15D9-4A01-9A85-4C2F315DC03A} = {09430EDF-15D9-4A01-9A85-4C2F315DC03A}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeManagement.BLL", "EmployeeManagement.BLL\EmployeeManagement.BLL.csproj", "{09430EDF-15D9-4A01-9A85-4C2F315DC03A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{44D26AAF-D4AA-4C90-9BE4-1E59DBF6DD4A} = {44D26AAF-D4AA-4C90-9BE4-1E59DBF6DD4A}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +50,10 @@ Global
 		{98026864-8658-4EAA-8509-C92A91463401}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98026864-8658-4EAA-8509-C92A91463401}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98026864-8658-4EAA-8509-C92A91463401}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09430EDF-15D9-4A01-9A85-4C2F315DC03A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09430EDF-15D9-4A01-9A85-4C2F315DC03A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09430EDF-15D9-4A01-9A85-4C2F315DC03A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09430EDF-15D9-4A01-9A85-4C2F315DC03A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

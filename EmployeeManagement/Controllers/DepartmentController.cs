@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EmployeeManagement.Models;
 using EmployeeManagement.Models.EntityModels;
+using EmployeeManagement.Repositories.Contracts;
 using EmployeeManagement.Repositories.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +13,10 @@ namespace EmployeeManagement.Controllers
 {
     public class DepartmentController : Controller
     {
-        private DepartmentRepository _departmentRepository;
+        private IDepartmentRepository _departmentRepository;
         private IMapper _mapper;
 
-        public DepartmentController(DepartmentRepository departmentRepository, IMapper mapper)
+        public DepartmentController(IDepartmentRepository departmentRepository, IMapper mapper)
         {
             _departmentRepository = departmentRepository;
             _mapper = mapper;

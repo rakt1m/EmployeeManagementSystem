@@ -4,34 +4,20 @@ using System.Linq;
 using System.Text;
 using EmployeeManagement.DatabaseContext.DatabaseContext;
 using EmployeeManagement.Models.EntityModels;
+using EmployeeManagement.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.Repositories.Repository
 {
-    public class EmployeeRepository
+    public class EmployeeRepository : Repository<Employee>, IEmployeeRepository
     {
 
         ApplicationDbContext db = new ApplicationDbContext();
 
-        public object Delete { get; set; }
-
-        public bool Add(Employee employee)
-        {
-            db.Employees.Add(employee);
-            return db.SaveChanges() > 0;
-        }
-
-        public Employee GetById(int id)
-        {
-            return db.Employees.FirstOrDefault(c => c.Id == id);
-
-        }
-
-        public bool Update(Employee employee)
-        {
-            db.Entry(employee).State = EntityState.Modified;
-            return db.SaveChanges() > 0;
-        }
+        
+       
+        
+       
 
         public IEnumerable<Employee> Search(Employee employeeSearchCriteria)
         {
@@ -53,9 +39,11 @@ namespace EmployeeManagement.Repositories.Repository
 
             return result.ToList();
         }
-        public IEnumerable<Employee> GetAll()
+        public override ICollection<Employee> GetAll()
         {
-            return db.Employees.Include(c => c.Department).ToList();
+            return db.Employees
+                .Include(c => c.Department)
+                .ToList();
         }
       
        

@@ -7,7 +7,10 @@ using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using AutoMapper;
+using EmployeeManagement.BLL.Contracts;
+using EmployeeManagement.BLL.Manager;
 using EmployeeManagement.DatabaseContext.DatabaseContext;
+using EmployeeManagement.Repositories.Contracts;
 using EmployeeManagement.Repositories.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -30,12 +33,31 @@ namespace EmployeeManagement.Configuration
 
                 services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ApplicationDbContext"), b => b.MigrationsAssembly("EmployeeManagement.DatabaseContext")));
        
-                services.AddTransient<EmployeeRepository>();
-                services.AddTransient<DepartmentRepository>();
-                services.AddAutoMapper();
-                services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                services.AddTransient<IEmployeeRepository>(c =>
+                {
+                    if (1 == 1)
+                    {
+                        return new EmployeeRepository();
+                    }
+                   
+                });
+            services.AddTransient<IDepartmentRepository>(
+                c =>
+                {
+                    if (1 == 1)
+                    {
+                        return new DepartmentRepository();
+                    }
+                });
+             services.AddTransient<IEmployeeManager, EmployeeManager>();
+             services.AddTransient<IDepartmentManager, DepartmentManager>();
+            services.AddAutoMapper();
+                services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                    .AddJsonOptions(options => {
+                        options.SerializerSettings.ReferenceLoopHandling =
+                            Newtonsoft.Json.ReferenceLoopHandling.Ignore; 
 
-
+                          });
             }
         }
     }

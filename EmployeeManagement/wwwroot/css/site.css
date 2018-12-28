@@ -49,6 +49,23 @@ body {
     color:goldenrod;
       
 }
-.custommodal {
-    padding-left: 15%;
+
+
+@font-face {
+    font-family: hakim;
+    src: url("./wwwroot//hakim.eot") /* EOT file for IE */
+}
+@font-face {
+    font-family: hakim;
+    src: url("./wwwroot/fonts/hakim.ttf") /* TTF file for CSS3 browsers */
+}
+.o {
+    background-color: #37A000;
+    width: 100%;
+    color: white;
+    font-family: zakir;
+
+}
+.c {
+    background-color: #cdcdcd;
 }
